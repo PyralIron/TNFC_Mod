@@ -317,13 +317,19 @@ public class IERecipes
             NonNullList foo = iingredient.getValidIngredients();
             Ingredient ingredient = Ingredient.fromStacks((ItemStack) foo.get(0));
             ItemStack output = quernRecipe.getOutputs().get(0);
+            Item item = output.getItem();
+
+            //The IE Crusher is just super-efficient
+            int amount = output.getCount() * 2 + 2;
+            int meta = output.getMetadata();
+            ItemStack newoutput = new ItemStack(item, amount, meta);
 
             if (ingredient != null)
             {
-                CrusherRecipe.addRecipe(output, ingredient, 4000);
+                CrusherRecipe.addRecipe(newoutput, ingredient, 4000);
             }
         }
-    }
+  }
 
     public static void registerGardenClocheRecipes()
     {
