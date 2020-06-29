@@ -320,8 +320,8 @@ public class IERecipes
             ItemStack output = quernRecipe.getOutputs().get(0);
             Item item = output.getItem();
 
-            //The IE Crusher is just super-efficient
-            int amount = output.getCount() * 2 + 2;
+            //The IE Crusher is just super-efficient but this gets ridiculous
+            int amount = Math.min(output.getCount() * 2 + 2, 9);
             int meta = output.getMetadata();
             ItemStack newoutput = new ItemStack(item, amount, meta);
 
