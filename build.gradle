@@ -1,13 +1,25 @@
 buildscript {
     repositories {
+        // Repositories required for ForgeGradle go here.
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "curseforge"
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: 'com.wynprice.cursemaven'
 
 // Load properties file, easier to manage versions of required dependencies
 file "build.properties" withReader {
@@ -42,6 +54,13 @@ minecraft {
 repositories {
     // Repositories required for dependencies, not ForgeGradle go here.
     mavenCentral()
+       maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
+        maven { //Guidebook ffs
+        url 'http://dogforce-games.com/maven'
+    }
     maven {
         name = "CraftTweaker Maven"
         url = "https://maven.blamejared.com/"
@@ -51,10 +70,7 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven {
-        name = "Hwyla maven"
-        url "http://tehnut.info/maven"
-    }
+
     maven { // TOP
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
@@ -80,9 +96,7 @@ repositories {
         name = "Modmuss50"
         url = "http://maven.modmuss50.me/"
     }
-    maven { //Guidebook ffs
-        url 'http://dogforce-games.com/maven'
-    }
+
 }
 
 String mcVersion = config.minecraft.version
@@ -96,31 +110,9 @@ dependencies {
     }
     // deobfCompile ("mezz.jei:jei_${config.minecraft.version}:${config.jei.version}")
     // deobfCompile ("cofh:RedstoneFlux:1.12-2.0.1+:deobf")
-    compileOnly ("mcp.mobius.waila:Hwyla:${config.HWYLA.version}_${config.minecraft.version}"){
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-    }
-    compile ("mcjty.theoneprobe:TheOneProbe-${shortVersion}:${config.TOP.version}"){
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-    }
-    deobfCompile ("gigaherz.guidebook:Guidebook-1.12.2:2.9.4"){
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-    }
-    
-    deobfCompile('TechReborn:TechReborn-1.12.2:+:universal') {
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-        }
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.+") {
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-    }
-    deobfCompile("blusunrize:ImmersiveEngineering:+") {
-        exclude group: 'mezz.jei', module:'jei_1.12.2'
-        exclude group: 'cofh', module:'RedstoneFlux'
-    }
+    // For now, since maven is no show, use the curse maven plugin to resolve the exact file name
+
+
     compile fileTree(include: ["*.jar"], dir: "libs")
 }
 
